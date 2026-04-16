@@ -9,3 +9,4 @@ LeetGPU 编程练习题解。
 | 题目 | CUDA | Triton | PyTorch |
 |------|------|--------|---------|
 | Vector Addition | [.cu](easy/vector-addition/vector-addition.cu) | [.py](easy/vector-addition/vector-addition.triton.py) | [.py](easy/vector-addition/vector-addition.pytorch.py) |
+| Matrix Multiplication | [.cu](easy/matrix-multiplication/matrix-multiplication.cu) | [.py](easy/matrix-multiplication/matrix_multiplication.triton.py) | [.py](easy/matrix-multiplication/matrix_multiplication.pytorch.py) |
