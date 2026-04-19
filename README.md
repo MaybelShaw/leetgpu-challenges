@@ -15,3 +15,4 @@ LeetGPU 编程练习题解。
 | Matrix Addition | [.cu](easy/matrix-addition/matrix_addition.cu) | [.py](easy/matrix-addition/matrix_addition.triton.py) | [.py](easy/matrix-addition/matrix_addition.pytorch.py) |
 | 1D Convolution | [.cu](easy/1d-convolution/1d_convolution.cu) | [.py](easy/1d-convolution/1d_convolution.triton.py) | [.py](easy/1d-convolution/1d_convolution.pytorch.py) |
 | Reverse Array | [.cu](easy/reverse-array/reverse_array.cu) | [.py](easy/reverse-array/reverse_array.triton.py) | [.py](easy/reverse-array/reverse_array.pytorch.py) |
+| ReLU | [.cu](easy/relu/relu.cu) | [.py](easy/relu/relu.triton.py) | [.py](easy/relu/relu.pytorch.py) |
