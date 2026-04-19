@@ -14,3 +14,4 @@ LeetGPU 编程练习题解。
 | Color Inversion | [.cu](easy/color-inversion/color_inversion.cu) | [.py](easy/color-inversion/color_inversion.triton.py) | [.py](easy/color-inversion/color_inversion.pytorch.py) |
 | Matrix Addition | [.cu](easy/matrix-addition/matrix_addition.cu) | [.py](easy/matrix-addition/matrix_addition.triton.py) | [.py](easy/matrix-addition/matrix_addition.pytorch.py) |
 | 1D Convolution | [.cu](easy/1d-convolution/1d_convolution.cu) | [.py](easy/1d-convolution/1d_convolution.triton.py) | [.py](easy/1d-convolution/1d_convolution.pytorch.py) |
+| Reverse Array | [.cu](easy/reverse-array/reverse_array.cu) | [.py](easy/reverse-array/reverse_array.triton.py) | [.py](easy/reverse-array/reverse_array.pytorch.py) |
