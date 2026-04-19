@@ -16,3 +16,4 @@ LeetGPU 编程练习题解。
 | 1D Convolution | [.cu](easy/1d-convolution/1d_convolution.cu) | [.py](easy/1d-convolution/1d_convolution.triton.py) | [.py](easy/1d-convolution/1d_convolution.pytorch.py) |
 | Reverse Array | [.cu](easy/reverse-array/reverse_array.cu) | [.py](easy/reverse-array/reverse_array.triton.py) | [.py](easy/reverse-array/reverse_array.pytorch.py) |
 | ReLU | [.cu](easy/relu/relu.cu) | [.py](easy/relu/relu.triton.py) | [.py](easy/relu/relu.pytorch.py) |
+| Leaky ReLU | [.cu](easy/leaky-relu/leaky_relu.cu) | [.py](easy/leaky-relu/leaky_relu.triton.py) | [.py](easy/leaky-relu/leaky_relu.pytorch.py) |
