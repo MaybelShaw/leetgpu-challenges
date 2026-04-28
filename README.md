@@ -24,3 +24,4 @@ LeetGPU 编程练习题解。
 | GEGLU | [.cu](easy/geglu/geglu.cu) | [.py](easy/geglu/geglu.triton.py) | [.py](easy/geglu/geglu.pytorch.py) |
 | Interleave | [.cu](easy/interleave/interleave.cu) | [.py](easy/interleave/interleave.triton.py) | [.py](easy/interleave/interleave.pytorch.py) |
 | Matrix Copy | [.cu](easy/matrix-copy/matrix_copy.cu) | [.py](easy/matrix-copy/matrix_copy.triton.py) | [.py](easy/matrix-copy/matrix_copy.pytorch.py) |
+| Value Clipping | [.cu](easy/value-clipping/value_clipping.cu) | [.py](easy/value-clipping/value_clipping.triton.py) | [.py](easy/value-clipping/value_clipping.pytorch.py) |
