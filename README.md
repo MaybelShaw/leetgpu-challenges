@@ -19,3 +19,4 @@ LeetGPU 编程练习题解。
 | Leaky ReLU | [.cu](easy/leaky-relu/leaky_relu.cu) | [.py](easy/leaky-relu/leaky_relu.triton.py) | [.py](easy/leaky-relu/leaky_relu.pytorch.py) |
 | Simple Inference | - | - | [.py](easy/simple-inference/simple_inference.pytorch.py) |
 | Sigmoid | [.cu](easy/sigmoid/sigmoid.cu) | [.py](easy/sigmoid/sigmoid.triton.py) | [.py](easy/sigmoid/sigmoid.pytorch.py) |
+| SiLU | [.cu](easy/silu/silu.cu) | [.py](easy/silu/silu.triton.py) | [.py](easy/silu/silu.pytorch.py) |
