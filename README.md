@@ -20,3 +20,4 @@ LeetGPU 编程练习题解。
 | Simple Inference | - | - | [.py](easy/simple-inference/simple_inference.pytorch.py) |
 | Sigmoid | [.cu](easy/sigmoid/sigmoid.cu) | [.py](easy/sigmoid/sigmoid.triton.py) | [.py](easy/sigmoid/sigmoid.pytorch.py) |
 | SiLU | [.cu](easy/silu/silu.cu) | [.py](easy/silu/silu.triton.py) | [.py](easy/silu/silu.pytorch.py) |
+| SwiGLU | [.cu](easy/swiglu/swiglu.cu) | [.py](easy/swiglu/swiglu.triton.py) | [.py](easy/swiglu/swiglu.pytorch.py) |
