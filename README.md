@@ -17,3 +17,5 @@ LeetGPU 编程练习题解。
 | Reverse Array | [.cu](easy/reverse-array/reverse_array.cu) | [.py](easy/reverse-array/reverse_array.triton.py) | [.py](easy/reverse-array/reverse_array.pytorch.py) |
 | ReLU | [.cu](easy/relu/relu.cu) | [.py](easy/relu/relu.triton.py) | [.py](easy/relu/relu.pytorch.py) |
 | Leaky ReLU | [.cu](easy/leaky-relu/leaky_relu.cu) | [.py](easy/leaky-relu/leaky_relu.triton.py) | [.py](easy/leaky-relu/leaky_relu.pytorch.py) |
+| Simple Inference | - | - | [.py](easy/simple-inference/simple_inference.pytorch.py) |
+| Sigmoid | [.cu](easy/sigmoid/sigmoid.cu) | [.py](easy/sigmoid/sigmoid.triton.py) | [.py](easy/sigmoid/sigmoid.pytorch.py) |
