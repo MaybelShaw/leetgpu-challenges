@@ -22,3 +22,4 @@ LeetGPU 编程练习题解。
 | SiLU | [.cu](easy/silu/silu.cu) | [.py](easy/silu/silu.triton.py) | [.py](easy/silu/silu.pytorch.py) |
 | SwiGLU | [.cu](easy/swiglu/swiglu.cu) | [.py](easy/swiglu/swiglu.triton.py) | [.py](easy/swiglu/swiglu.pytorch.py) |
 | GEGLU | [.cu](easy/geglu/geglu.cu) | [.py](easy/geglu/geglu.triton.py) | [.py](easy/geglu/geglu.pytorch.py) |
+| Interleave | [.cu](easy/interleave/interleave.cu) | [.py](easy/interleave/interleave.triton.py) | [.py](easy/interleave/interleave.pytorch.py) |
