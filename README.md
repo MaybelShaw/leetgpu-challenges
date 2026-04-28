@@ -23,3 +23,4 @@ LeetGPU 编程练习题解。
 | SwiGLU | [.cu](easy/swiglu/swiglu.cu) | [.py](easy/swiglu/swiglu.triton.py) | [.py](easy/swiglu/swiglu.pytorch.py) |
 | GEGLU | [.cu](easy/geglu/geglu.cu) | [.py](easy/geglu/geglu.triton.py) | [.py](easy/geglu/geglu.pytorch.py) |
 | Interleave | [.cu](easy/interleave/interleave.cu) | [.py](easy/interleave/interleave.triton.py) | [.py](easy/interleave/interleave.pytorch.py) |
+| Matrix Copy | [.cu](easy/matrix-copy/matrix_copy.cu) | [.py](easy/matrix-copy/matrix_copy.triton.py) | [.py](easy/matrix-copy/matrix_copy.pytorch.py) |
