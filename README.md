@@ -25,3 +25,9 @@ LeetGPU 编程练习题解。
 | Interleave | [.cu](easy/interleave/interleave.cu) | [.py](easy/interleave/interleave.triton.py) | [.py](easy/interleave/interleave.pytorch.py) |
 | Matrix Copy | [.cu](easy/matrix-copy/matrix_copy.cu) | [.py](easy/matrix-copy/matrix_copy.triton.py) | [.py](easy/matrix-copy/matrix_copy.pytorch.py) |
 | Value Clipping | [.cu](easy/value-clipping/value_clipping.cu) | [.py](easy/value-clipping/value_clipping.triton.py) | [.py](easy/value-clipping/value_clipping.pytorch.py) |
+
+### Medium
+
+| 题目 | CUDA | Triton | PyTorch |
+|------|------|--------|---------|
+| Reduction | [.cu](medium/reduction/reduction.cu) | [.py](medium/reduction/reduction.triton.py) | [.py](medium/reduction/reduction.pytorch.py) |
