@@ -31,3 +31,4 @@ LeetGPU 编程练习题解。
 | 题目 | CUDA | Triton | PyTorch |
 |------|------|--------|---------|
 | Reduction | [.cu](medium/reduction/reduction.cu) | [.py](medium/reduction/reduction.triton.py) | [.py](medium/reduction/reduction.pytorch.py) |
+| Dot Product | [.cu](medium/dot-product/dot_product.cu) | [.py](medium/dot-product/dot_product.triton.py) | [.py](medium/dot-product/dot_product.pytorch.py) |
