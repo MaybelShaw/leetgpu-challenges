@@ -32,6 +32,7 @@ LeetGPU 编程练习题解。
 |------|------|--------|---------|
 | Reduction | [.cu](medium/reduction/reduction.cu) | [.py](medium/reduction/reduction.triton.py) | [.py](medium/reduction/reduction.pytorch.py) |
 | Dot Product | [.cu](medium/dot-product/dot_product.cu) | [.py](medium/dot-product/dot_product.triton.py) | [.py](medium/dot-product/dot_product.pytorch.py) |
+| FP16 Dot Product | [.cu](medium/fp16_dot_product/fp16_dot_product.cu) | [.py](medium/fp16_dot_product/fp16_dot_product.triton.py) | [.py](medium/fp16_dot_product/fp16_dot_product.pytorch.py) |
 | Softmax | [.cu](medium/softmax/softmax.cu) | [.py](medium/softmax/softmax.triton.py) | [.py](medium/softmax/softmax.pytorch.py) |
 
 > Note: Softmax 的 CUDA/Triton 当前为单 block / 单 program 学习版，`N = 500000` 的多 block 高性能实现尚未完成。
