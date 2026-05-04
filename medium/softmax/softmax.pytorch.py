@@ -1,0 +1,9 @@
+import torch
+
+
+# input, output are tensors on the GPU
+def solve(input: torch.Tensor, output: torch.Tensor, N: int):
+    x = input - torch.max(input[:N])
+    exp = torch.exp(x)
+    sum = torch.sum(exp)
+    output.copy_(exp / sum)
