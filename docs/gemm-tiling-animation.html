@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tiled GEMM Animation</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fb;
+      --panel: #ffffff;
+      --ink: #18212f;
+      --muted: #647083;
+      --line: #d9deea;
+      --a: #1f8a70;
+      --b: #3157c9;
+      --c: #bb4d00;
+      --tile: #f3c74f;
+      --active: #e02f5f;
+      --code: #101827;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 18px 34px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: flex-end;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 28px;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .board,
+    .side {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 10px 28px rgba(20, 32, 56, 0.07);
+    }
+
+    .board {
+      padding: 18px;
+    }
+
+    .formula {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .formula strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .matrices {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .matrix-block {
+      min-width: 0;
+    }
+
+    .matrix-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .shape {
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 12px;
+    }
+
+    .matrix {
+      display: grid;
+      gap: 4px;
+      padding: 8px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcff;
+    }
+
+    .matrix.a {
+      grid-template-columns: repeat(8, minmax(30px, 1fr));
+    }
+
+    .matrix.b {
+      grid-template-columns: repeat(4, minmax(34px, 1fr));
+    }
+
+    .matrix.c {
+      grid-template-columns: repeat(4, minmax(42px, 1fr));
+    }
+
+    .cell {
+      min-height: 34px;
+      border: 1px solid #e3e7f0;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      background: #ffffff;
+      transition: background 180ms ease, color 180ms ease, border-color 180ms ease, transform 180ms ease;
+    }
+
+    .cell.tile-a {
+      background: rgba(31, 138, 112, 0.16);
+      border-color: rgba(31, 138, 112, 0.55);
+    }
+
+    .cell.tile-b {
+      background: rgba(49, 87, 201, 0.14);
+      border-color: rgba(49, 87, 201, 0.5);
+    }
+
+    .cell.active-a {
+      background: var(--a);
+      border-color: var(--a);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .cell.active-b {
+      background: var(--b);
+      border-color: var(--b);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .cell.target-c {
+      background: rgba(187, 77, 0, 0.14);
+      border-color: rgba(187, 77, 0, 0.55);
+      font-weight: 700;
+    }
+
+    .cell.active-c {
+      background: var(--c);
+      border-color: var(--c);
+      color: #fff;
+    }
+
+    .wide {
+      grid-column: 1 / -1;
+    }
+
+    .side {
+      padding: 16px;
+      position: sticky;
+      top: 16px;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    button {
+      appearance: none;
+      border: 1px solid #c8d0de;
+      background: #fff;
+      color: var(--ink);
+      border-radius: 7px;
+      min-height: 36px;
+      padding: 0 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button.primary {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+    }
+
+    .step-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+      background: #fbfcff;
+    }
+
+    .step-title {
+      margin: 0 0 8px;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .step-text {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .numbers {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      background: #fff;
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .metric strong {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 16px;
+    }
+
+    pre {
+      margin: 0;
+      padding: 12px;
+      background: var(--code);
+      color: #e8edf7;
+      border-radius: 8px;
+      overflow: auto;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .code-active {
+      color: #ffd76a;
+      font-weight: 800;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      display: inline-block;
+      margin-right: 5px;
+      vertical-align: -1px;
+    }
+
+    .swatch.a {
+      background: var(--a);
+    }
+
+    .swatch.b {
+      background: var(--b);
+    }
+
+    .swatch.c {
+      background: var(--c);
+    }
+
+    @media (max-width: 940px) {
+      header,
+      .layout {
+        display: block;
+      }
+
+      .side {
+        position: static;
+        margin-top: 18px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      main {
+        padding: 18px 10px 28px;
+      }
+
+      .matrices {
+        grid-template-columns: 1fr;
+      }
+
+      .cell {
+        min-height: 30px;
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <h1>Tiled GEMM：一轮 tile，里面还有多次乘加</h1>
+        <p class="subtitle">示例使用 A[4x8]、B[8x4]、C[4x4]，TILE=2。K=8 会分成 4 轮 tile_k；每轮 tile 里对单个 C 元素有 2 次乘加，所以动画共有 8 个乘加步骤。</p>
+      </div>
+    </header>
+
+    <section class="layout">
+      <div class="board">
+        <div class="formula">
+          <strong>C[row, col]</strong>
+          <span>=</span>
+          <span>sum over k</span>
+          <strong>A[row, k] * B[k, col]</strong>
+        </div>
+
+        <div class="matrices">
+          <div class="matrix-block">
+            <div class="matrix-title">A <span class="shape">M x K = 4 x 8</span></div>
+            <div id="matrixA" class="matrix a"></div>
+          </div>
+
+          <div class="matrix-block">
+            <div class="matrix-title">B <span class="shape">K x N = 8 x 4</span></div>
+            <div id="matrixB" class="matrix b"></div>
+          </div>
+
+          <div class="matrix-block wide">
+            <div class="matrix-title">C <span class="shape">M x N = 4 x 4，当前 block tile 是 2 x 2，重点看 C[1,2]</span></div>
+            <div id="matrixC" class="matrix c"></div>
+          </div>
+        </div>
+
+        <div class="legend">
+          <span><i class="swatch a"></i>A/B/C 的 2 x 2 tile</span>
+          <span><i class="swatch b"></i>单个 C 元素当前读取的行/列</span>
+          <span><i class="swatch c"></i>当前乘加目标 C[1,2]</span>
+        </div>
+      </div>
+
+      <aside class="side">
+        <div class="controls">
+          <button id="playBtn" class="primary">播放</button>
+          <button id="prevBtn">上一步</button>
+          <button id="nextBtn">下一步</button>
+          <button id="resetBtn">重置</button>
+        </div>
+
+        <div class="step-card">
+          <p id="stepTitle" class="step-title"></p>
+          <p id="stepText" class="step-text"></p>
+        </div>
+
+        <div class="numbers">
+          <div class="metric">
+            <span>tile_k</span>
+            <strong id="tileKValue"></strong>
+          </div>
+          <div class="metric">
+            <span>当前 i</span>
+            <strong id="iValue"></strong>
+          </div>
+          <div class="metric">
+            <span>当前乘法</span>
+            <strong id="mulValue"></strong>
+          </div>
+          <div class="metric">
+            <span>累计 sum</span>
+            <strong id="sumValue"></strong>
+          </div>
+        </div>
+
+        <pre><code id="codeView"></code></pre>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const TILE = 2;
+    const M = 4;
+    const K = 8;
+    const N = 4;
+    const targetRow = 1;
+    const targetCol = 2;
+    const blockRowStart = Math.floor(targetRow / TILE) * TILE;
+    const blockColStart = Math.floor(targetCol / TILE) * TILE;
+
+    const A = [
+      [1, 2, 3, 4, 5, 6, 7, 8],
+      [2, 1, 4, 3, 6, 5, 8, 7],
+      [1, 3, 5, 7, 2, 4, 6, 8],
+      [8, 6, 4, 2, 7, 5, 3, 1]
+    ];
+
+    const B = [
+      [1, 2, 3, 4],
+      [2, 1, 4, 3],
+      [3, 4, 1, 2],
+      [4, 3, 2, 1],
+      [1, 3, 2, 4],
+      [2, 4, 3, 1],
+      [3, 1, 4, 2],
+      [4, 2, 1, 3]
+    ];
+
+    const matrixA = document.getElementById("matrixA");
+    const matrixB = document.getElementById("matrixB");
+    const matrixC = document.getElementById("matrixC");
+    const playBtn = document.getElementById("playBtn");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const stepTitle = document.getElementById("stepTitle");
+    const stepText = document.getElementById("stepText");
+    const tileKValue = document.getElementById("tileKValue");
+    const iValue = document.getElementById("iValue");
+    const mulValue = document.getElementById("mulValue");
+    const sumValue = document.getElementById("sumValue");
+    const codeView = document.getElementById("codeView");
+
+    let step = 0;
+    let playing = false;
+    let timer = null;
+
+    const steps = [];
+    for (let tileK = 0; tileK < K; tileK += TILE) {
+      for (let i = 0; i < TILE; i++) {
+        steps.push({ tileK, i, k: tileK + i });
+      }
+    }
+
+    function makeCell(value, attrs) {
+      const cell = document.createElement("div");
+      cell.className = "cell";
+      cell.textContent = value;
+      Object.entries(attrs).forEach(([key, val]) => {
+        cell.dataset[key] = val;
+      });
+      return cell;
+    }
+
+    function renderMatrices() {
+      matrixA.innerHTML = "";
+      matrixB.innerHTML = "";
+      matrixC.innerHTML = "";
+
+      for (let r = 0; r < M; r++) {
+        for (let c = 0; c < K; c++) {
+          matrixA.appendChild(makeCell(A[r][c], { matrix: "A", row: r, col: c }));
+        }
+      }
+
+      for (let r = 0; r < K; r++) {
+        for (let c = 0; c < N; c++) {
+          matrixB.appendChild(makeCell(B[r][c], { matrix: "B", row: r, col: c }));
+        }
+      }
+
+      for (let r = 0; r < M; r++) {
+        for (let c = 0; c < N; c++) {
+          const cell = makeCell("", { matrix: "C", row: r, col: c });
+          if (r === targetRow && c === targetCol) {
+            cell.textContent = "sum";
+          }
+          matrixC.appendChild(cell);
+        }
+      }
+    }
+
+    function clearHighlights() {
+      document.querySelectorAll(".cell").forEach((cell) => {
+        cell.classList.remove("tile-a", "tile-b", "active-a", "active-b", "target-c", "active-c");
+      });
+    }
+
+    function selectCell(matrix, row, col) {
+      return document.querySelector(`[data-matrix="${matrix}"][data-row="${row}"][data-col="${col}"]`);
+    }
+
+    function partialSum(index) {
+      let total = 0;
+      for (let s = 0; s <= index; s++) {
+        const k = steps[s].k;
+        total += A[targetRow][k] * B[k][targetCol];
+      }
+      return total;
+    }
+
+    function renderCode(tileK, i, k) {
+      codeView.innerHTML = [
+        '<span class="code-active">for (int tile_k = 0; tile_k < K; tile_k += TILE)</span>',
+        "{",
+        `    // current tile_k = ${tileK}, loads k = ${tileK}..${tileK + TILE - 1}`,
+        "    As[ty][tx] = A[row * K + tile_k + tx];",
+        "    Bs[ty][tx] = B[(tile_k + ty) * N + col];",
+        "",
+        "    __syncthreads();",
+        "",
+        "    for (int i = 0; i < TILE; i++)",
+        "    {",
+        `        <span class="code-active">sum += As[ty][${i}] * Bs[${i}][tx];</span>`,
+        `        // actual k = tile_k + i = ${tileK} + ${i} = ${k}`,
+        "    }",
+        "}"
+      ].join("\n");
+    }
+
+    function update() {
+      clearHighlights();
+      const current = steps[step];
+      const tileK = current.tileK;
+      const i = current.i;
+      const k = current.k;
+
+      for (let r = 0; r < TILE; r++) {
+        for (let c = 0; c < TILE; c++) {
+          const aCell = selectCell("A", blockRowStart + r, tileK + c);
+          const bCell = selectCell("B", tileK + r, blockColStart + c);
+          const cCell = selectCell("C", blockRowStart + r, blockColStart + c);
+          if (aCell) aCell.classList.add("tile-a");
+          if (bCell) bCell.classList.add("tile-b");
+          if (cCell) cCell.classList.add("target-c");
+        }
+      }
+
+      const activeA = selectCell("A", targetRow, k);
+      const activeB = selectCell("B", k, targetCol);
+      const targetC = selectCell("C", targetRow, targetCol);
+      if (activeA) activeA.classList.add("active-a");
+      if (activeB) activeB.classList.add("active-b");
+      if (targetC) {
+        targetC.classList.add("target-c", "active-c");
+        targetC.textContent = partialSum(step);
+      }
+
+      const a = A[targetRow][k];
+      const b = B[k][targetCol];
+      const product = a * b;
+      const total = partialSum(step);
+
+      stepTitle.textContent = `第 ${Math.floor(step / TILE) + 1} 轮 tile，第 ${i + 1} 个乘加：处理 k = ${k}`;
+      stepText.textContent = `当前完整 block tile 是 C[${blockRowStart}..${blockRowStart + TILE - 1}, ${blockColStart}..${blockColStart + TILE - 1}]，A tile 是 ${TILE}x${TILE}，B tile 也是 ${TILE}x${TILE}。动画重点看 C[${targetRow},${targetCol}]，所以当前乘加只会用 A 的一行和 B 的一列。`;
+      tileKValue.textContent = tileK;
+      iValue.textContent = i;
+      mulValue.textContent = `${a} x ${b} = ${product}`;
+      sumValue.textContent = total;
+      renderCode(tileK, i, k);
+    }
+
+    function next() {
+      step = (step + 1) % steps.length;
+      update();
+    }
+
+    function prev() {
+      step = (step - 1 + steps.length) % steps.length;
+      update();
+    }
+
+    function stop() {
+      playing = false;
+      playBtn.textContent = "播放";
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    playBtn.addEventListener("click", () => {
+      playing = !playing;
+      playBtn.textContent = playing ? "暂停" : "播放";
+      if (playing) {
+        timer = setInterval(next, 1100);
+      } else {
+        stop();
+      }
+    });
+
+    prevBtn.addEventListener("click", () => {
+      stop();
+      prev();
+    });
+
+    nextBtn.addEventListener("click", () => {
+      stop();
+      next();
+    });
+
+    resetBtn.addEventListener("click", () => {
+      stop();
+      step = 0;
+      update();
+    });
+
+    renderMatrices();
+    update();
+  </script>
+</body>
+</html>
